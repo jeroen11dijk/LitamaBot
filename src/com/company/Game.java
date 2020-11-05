@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 public class Game {
 
-    public Board board;
-    public Color turn;
-    public Hand red;
-    public Hand blue;
-    public Card middle;
-    public Hand currentHand;
+    Board board;
+    private Color turn;
+    private Hand red;
+    private Hand blue;
+    private Card middle;
+    private Hand currentHand;
 
-    public Game(Board board, Color turn, Hand red, Hand blue, Card middle) {
+    Game(Board board, Color turn, Hand red, Hand blue, Card middle) {
         this.board = board;
         this.turn = turn;
         this.red = red;
@@ -20,7 +20,7 @@ public class Game {
         this.currentHand = this.turn == Color.RED ? this.red : this.blue;
     }
 
-    public ArrayList<Game> notAMoveGen() {
+    ArrayList<Game> notAMoveGen() {
         ArrayList<Game> res = new ArrayList<Game>();
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 5; x++) {
@@ -34,11 +34,7 @@ public class Game {
                             Color newTurn = this.turn == Color.RED ? Color.BLUE : Color.RED;
                             Hand change = new Hand(this.middle, this.currentHand.second, this.turn);
                             Card newMiddle = this.currentHand.first;
-                            if (this.turn == Color.RED) {
-                                res.add(new Game(board, newTurn, change, new Hand(this.blue.first, this.blue.second, Color.BLUE), newMiddle));
-                            } else {
-                                res.add(new Game(board, newTurn, new Hand(this.red.first, this.red.second, Color.RED), change, newMiddle));
-                            }
+                            addGame(res, board, newTurn, change, newMiddle);
                         }
                     }
                     for (Offset offset : this.currentHand.second.offsets) {
@@ -50,17 +46,21 @@ public class Game {
                             Color newTurn = this.turn == Color.RED ? Color.BLUE : Color.RED;
                             Hand change = new Hand(this.middle, this.currentHand.first, this.turn);
                             Card newMiddle = this.currentHand.second;
-                            if (this.turn == Color.RED) {
-                                res.add(new Game(board, newTurn, change, new Hand(this.blue.first, this.blue.second, Color.BLUE), newMiddle));
-                            } else {
-                                res.add(new Game(board, newTurn, new Hand(this.red.first, this.red.second, Color.RED), change, newMiddle));
-                            }
+                            addGame(res, board, newTurn, change, newMiddle);
                         }
                     }
                 }
             }
         }
         return res;
+    }
+
+    private void addGame(ArrayList<Game> res, Board board, Color newTurn, Hand change, Card newMiddle) {
+        if (this.turn == Color.RED) {
+            res.add(new Game(board, newTurn, change, new Hand(this.blue.first, this.blue.second, Color.BLUE), newMiddle));
+        } else {
+            res.add(new Game(board, newTurn, new Hand(this.red.first, this.red.second, Color.RED), change, newMiddle));
+        }
     }
 
     @Override

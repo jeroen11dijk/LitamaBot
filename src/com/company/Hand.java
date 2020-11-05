@@ -2,8 +2,8 @@ package com.company;
 
 public class Hand {
 
-    public Card first;
-    public Card second;
+    Card first;
+    Card second;
 
     Hand(Card first, Card second, Color color) {
         this.first = first;
