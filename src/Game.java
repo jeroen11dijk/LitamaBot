@@ -6,7 +6,7 @@ import static java.lang.Math.min;
 
 public class Game {
 
-    private Board board;
+    Board board;
     private Color turn;
     private Hand red;
     private Hand blue;
@@ -51,7 +51,7 @@ public class Game {
         return res;
     }
 
-    private Game applyMove(Move move) {
+    Game applyMove(Move move) {
         Board board = this.board.applyMove(move.offset, move.x, move.y);
         Color newTurn = this.turn == Color.RED ? Color.BLUE : Color.RED;
         Hand newHand;
@@ -76,18 +76,23 @@ public class Game {
         int[][] canReach = new int[5][5];
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 5; x++) {
-                if (this.board.board[y][x].color == this.turn) {
-                    res += 1;
-                    for (Offset offset : this.currentHand.first.offsets) {
+                Color skipTurn = this.turn == Color.RED ? Color.BLUE : Color.RED;
+                Hand skipHand = this.turn == Color.RED ? this.blue : this.red;
+                if (this.board.board[y][x].color == skipTurn) {
+                    res += 3;
+                    for (Offset offset : skipHand.first.offsets) {
                         if (this.board.validMove(offset, x, y)) {
                             canReach[y + offset.y][x + offset.x] = 1;
                         }
                     }
-                    for (Offset offset : this.currentHand.second.offsets) {
+                    for (Offset offset : skipHand.second.offsets) {
                         if (this.board.validMove(offset, x, y)) {
                             canReach[y + offset.y][x + offset.x] = 1;
                         }
                     }
+                }
+                else if (this.board.board[y][x].color == this.turn) {
+                    res -= 3;
                 }
             }
         }
@@ -108,7 +113,7 @@ public class Game {
             for (Move move : this.moveGen()) {
                 Game newGame = this.applyMove(move);
                 Evaluation eval = newGame.alphabeta(depth - 1, alpha, beta);
-                if (eval.score > alpha) {
+                if (eval.score >= alpha) {
                     alpha = eval.score;
                     bestMove = move;
                     if (alpha >= beta) {
@@ -122,7 +127,7 @@ public class Game {
             for (Move move : this.moveGen()) {
                 Game newGame = this.applyMove(move);
                 Evaluation eval = newGame.alphabeta(depth - 1, alpha, beta);
-                if (eval.score < beta) {
+                if (eval.score <= beta) {
                     beta = eval.score;
                     bestMove = move;
                     if (beta <= alpha) {

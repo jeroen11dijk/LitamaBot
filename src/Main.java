@@ -9,10 +9,12 @@ public class Main {
         Card middle = Card.CRAB;
         Color turn = middle.color;
         Board board = new Board();
-        Game game = new Game(board, turn, red, blue, middle);
-        long start = currentTimeMillis();
-        System.out.println(game.alphabeta(6, Integer.MIN_VALUE, Integer.MAX_VALUE));
-        System.out.println(currentTimeMillis() - start);
+        Game game = new Game(board, turn, red, blue, middle);game.alphabeta(1, Integer.MIN_VALUE, Integer.MAX_VALUE);
+//        Move openingMoveBlue = game.alphabeta(6, Integer.MIN_VALUE, Integer.MAX_VALUE).move;
+//        System.out.println(openingMoveBlue);
+//        game = game.applyMove(openingMoveBlue);
+//        Move openingMoveRed = game.alphabeta(6, Integer.MIN_VALUE, Integer.MAX_VALUE).move;
+//        System.out.println(openingMoveRed);
     }
 
     // blue = ox, boar, red = horse, elephant, side = crab

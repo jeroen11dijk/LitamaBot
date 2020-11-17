@@ -2,6 +2,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLOutput;
+
 class GameTest {
 
     Game setUp() {
@@ -59,5 +61,32 @@ class GameTest {
     void evaluateStart(){
         Game game = setUp();
         assertEquals(15, game.evaluate());
+    }
+
+    @Test
+    void mateIn1() {
+        Hand blue = new Hand(Card.TIGER, Card.BOAR, Color.BLUE);
+        Hand red = new Hand(Card.HORSE, Card.ELEPHANT, Color.RED);
+        Card middle = Card.CRAB;
+        Color turn = middle.color;
+        Piece[][] boardPiece = new Piece[][]{
+                {Piece.BLUE, Piece.BLUE, Piece.BLUEFIRE, Piece.EMPTY, Piece.BLUE},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.BLUE, Piece.EMPTY, Piece.EMPTY},
+                {Piece.RED, Piece.RED, Piece.REDOX, Piece.RED, Piece.RED}};
+        Board board = new Board(boardPiece);
+        Game game = new Game(board, turn, red, blue, middle);
+        Evaluation opening = game.alphabeta(2, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        System.out.println(opening);
+//        int i = 0;
+//        while(!game.board.gameOver) {
+//            System.out.println("Move: " + i);
+//            Move move = game.alphabeta2(7, Integer.MIN_VALUE, Integer.MAX_VALUE).move;
+//            System.out.println(move);
+//            game = game.applyMove(move);
+//            System.out.println(game);
+//            i++;
+//        }
     }
 }

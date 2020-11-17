@@ -23,6 +23,10 @@ public class Board {
         this.gameOver = board.gameOver;
     }
 
+    Board(Piece[][] board) {
+        this.board = board;
+    }
+
 
     Boolean validMove(Move move) {
         return validMove(move.offset, move.x, move.y);
