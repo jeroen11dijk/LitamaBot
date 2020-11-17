@@ -1,6 +1,3 @@
-package com.company;
-
-
 enum Card {
     RABBIT("rabbit", Color.BLUE, new Offset[]{new Offset(-1, -1), new Offset(1, 1), new Offset(2, 0)}),
     MONKEY("monkey", Color.BLUE, new Offset[]{new Offset(-1, -1), new Offset(-1, 1), new Offset(1, -1), new Offset(1, 1)}),

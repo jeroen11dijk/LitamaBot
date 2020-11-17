@@ -1,5 +1,3 @@
-package com.company;
-
 public class Move {
 
     Card card;

@@ -1,5 +1,3 @@
-package com.company;
-
 import java.util.ArrayList;
 
 import static java.lang.Math.max;
@@ -137,6 +135,19 @@ public class Game {
             }
             return value;
         }
+    }
+
+    long perft(int depth) {
+        if (depth == 0 || this.board.gameOver) {
+            return 1;
+        }
+        long res = 0;
+        ArrayList<Move> moves = this.moveGen();
+        for (Move newMove : moves) {
+            Game newGame = this.applyMove(newMove);
+            res += newGame.perft(depth - 1);
+        }
+        return res;
     }
 
     @Override

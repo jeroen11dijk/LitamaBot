@@ -1,5 +1,3 @@
-package com.company;
-
 enum Piece {
     RED(Color.RED),
     REDOX(Color.RED),

@@ -1,5 +1,3 @@
-package com.company;
-
 import static java.lang.System.currentTimeMillis;
 
 public class Main {

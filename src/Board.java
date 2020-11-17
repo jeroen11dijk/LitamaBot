@@ -1,5 +1,3 @@
-package com.company;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -43,19 +41,6 @@ public class Board {
         res.board[y][x] = Piece.EMPTY;
         if(this.board[y + offset.y][x + offset.x] == Piece.REDOX || this.board[y + offset.y][x + offset.x] == Piece.BLUEFIRE) {
             res.gameOver = true;
-        }
-        return res;
-    }
-
-    long perft(int depth, Game game) {
-        if (depth == 0 || game.board.gameOver) {
-            return 1;
-        }
-        long res = 0;
-        ArrayList<Move> moves = game.moveGen();
-        for (Move newMove : moves) {
-            Game newGame = game.applyMove(newMove);
-            res += perft(depth - 1, newGame);
         }
         return res;
     }
