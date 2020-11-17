@@ -2,7 +2,7 @@ public class Hand {
 
     Card first;
     Card second;
-    Color color;
+    private Color color;
 
     Hand(Card first, Card second, Color color) {
         this.first = first;

@@ -1,12 +1,9 @@
 import java.util.ArrayList;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
 
 public class Game {
 
-    Board board;
+    private Board board;
     private Color turn;
     private Hand red;
     private Hand blue;
@@ -51,7 +48,7 @@ public class Game {
         return res;
     }
 
-    Game applyMove(Move move) {
+    private Game applyMove(Move move) {
         Board board = this.board.applyMove(move.offset, move.x, move.y);
         Color newTurn = this.turn == Color.RED ? Color.BLUE : Color.RED;
         Hand newHand;
@@ -90,8 +87,7 @@ public class Game {
                             canReach[y + offset.y][x + offset.x] = 1;
                         }
                     }
-                }
-                else if (this.board.board[y][x].color == this.turn) {
+                } else if (this.board.board[y][x].color == this.turn) {
                     res -= 3;
                 }
             }

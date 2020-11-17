@@ -1,9 +1,9 @@
 public class Evaluation {
 
-    Move move;
+    private Move move;
     int score;
 
-    public Evaluation(Move move, int score) {
+    Evaluation(Move move, int score) {
         this.move = move;
         this.score = score;
     }

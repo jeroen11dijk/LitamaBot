@@ -1,5 +1,3 @@
-import static java.lang.System.currentTimeMillis;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -9,7 +7,8 @@ public class Main {
         Card middle = Card.CRAB;
         Color turn = middle.color;
         Board board = new Board();
-        Game game = new Game(board, turn, red, blue, middle);game.alphabeta(1, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        Game game = new Game(board, turn, red, blue, middle);
+        game.alphabeta(1, Integer.MIN_VALUE, Integer.MAX_VALUE);
 //        Move openingMoveBlue = game.alphabeta(6, Integer.MIN_VALUE, Integer.MAX_VALUE).move;
 //        System.out.println(openingMoveBlue);
 //        game = game.applyMove(openingMoveBlue);
