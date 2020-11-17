@@ -67,7 +67,7 @@ public class Board {
         ArrayList<Move> moves = game.moveGen();
         for (Move newMove : moves) {
             Game newGame = game.applyMove(newMove);
-            res += perft(depth - 1, newGame);
+            res += perft2(depth - 1, newGame);
         }
         return res;
     }

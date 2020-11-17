@@ -65,12 +65,18 @@ public class Game {
             for (int x = 0; x < 5; x++) {
                 if (this.board.board[y][x].color == this.turn) {
                     for (Offset offset : this.currentHand.first.offsets) {
+                        if (this.turn == Color.RED) {
+                            offset = offset.invert();
+                        }
                         Move move = new Move(this.currentHand.first, offset, x, y);
                         if(board.validMove(move)) {
                             res.add(move);
                         }
                     }
                     for (Offset offset : this.currentHand.second.offsets) {
+                        if (this.turn == Color.RED) {
+                            offset = offset.invert();
+                        }
                         Move move = new Move(this.currentHand.second, offset, x, y);
                         if(board.validMove(move)) {
                             res.add(move);

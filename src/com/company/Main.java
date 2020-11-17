@@ -13,8 +13,12 @@ public class Main {
         Board board = new Board();
         Game game = new Game(board, turn, red, blue, middle);
         long start = currentTimeMillis();
-        System.out.println(game.board.perft(7, game));
+        System.out.println(game.board.perft2(7, game));
         System.out.println(currentTimeMillis() - start);
+//        for (int i = 0; i < 7; i++) {
+//            System.out.println(game.board.perft(i, game));
+//            System.out.println(game.board.perft2(i, game));
+//        }
     }
 
     // blue = ox, boar, red = horse, elephant, side = crab
