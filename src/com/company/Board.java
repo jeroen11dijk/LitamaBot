@@ -52,22 +52,10 @@ public class Board {
             return 1;
         }
         long res = 0;
-        ArrayList<Game> games = game.notAMoveGen();
-        for (Game newGame : games) {
-            res += perft(depth - 1, newGame);
-        }
-        return res;
-    }
-
-    long perft2(int depth, Game game) {
-        if (depth == 0 || game.board.gameOver) {
-            return 1;
-        }
-        long res = 0;
         ArrayList<Move> moves = game.moveGen();
         for (Move newMove : moves) {
             Game newGame = game.applyMove(newMove);
-            res += perft2(depth - 1, newGame);
+            res += perft(depth - 1, newGame);
         }
         return res;
     }

@@ -24,41 +24,6 @@ public class Game {
         this.currentHand = this.turn == Color.RED ? this.red : this.blue;
     }
 
-    ArrayList<Game> notAMoveGen() {
-        ArrayList<Game> res = new ArrayList<Game>();
-        for (int y = 0; y < 5; y++) {
-            for (int x = 0; x < 5; x++) {
-                if (this.board.board[y][x].color == this.turn) {
-                    for (Offset offset : this.currentHand.first.offsets) {
-                        if (this.turn == Color.RED) {
-                            offset = offset.invert();
-                        }
-                        if (this.board.validMove(offset, x, y)) {
-                            Board board = this.board.applyMove(offset, x, y);
-                            Color newTurn = this.turn == Color.RED ? Color.BLUE : Color.RED;
-                            Hand change = new Hand(this.middle, this.currentHand.second, this.turn);
-                            Card newMiddle = this.currentHand.first;
-                            addGame(res, board, newTurn, change, newMiddle);
-                        }
-                    }
-                    for (Offset offset : this.currentHand.second.offsets) {
-                        if (this.turn == Color.RED) {
-                            offset = offset.invert();
-                        }
-                        if (this.board.validMove(offset, x, y)) {
-                            Board board = this.board.applyMove(offset, x, y);
-                            Color newTurn = this.turn == Color.RED ? Color.BLUE : Color.RED;
-                            Hand change = new Hand(this.middle, this.currentHand.first, this.turn);
-                            Card newMiddle = this.currentHand.second;
-                            addGame(res, board, newTurn, change, newMiddle);
-                        }
-                    }
-                }
-            }
-        }
-        return res;
-    }
-
     ArrayList<Move> moveGen() {
         ArrayList<Move> res = new ArrayList<Move>();
         for (int y = 0; y < 5; y++) {
@@ -150,7 +115,8 @@ public class Game {
         }
         if (this.turn == Color.BLUE) {
             int value = Integer.MIN_VALUE;
-            for (Game newGame : this.notAMoveGen()) {
+            for (Move move : this.moveGen()) {
+                Game newGame = this.applyMove(move);
                 value = max(value, newGame.alphabeta(depth - 1, alpha, beta));
                 alpha = max(alpha, value);
                 if (alpha >= beta) {
@@ -161,7 +127,8 @@ public class Game {
         }
         else {
             int value = Integer.MAX_VALUE;
-            for(Game newGame : this.notAMoveGen()) {
+            for (Move move : this.moveGen()) {
+                Game newGame = this.applyMove(move);
                 value = min(value, newGame.alphabeta(depth - 1, alpha, beta));
                 beta = min(beta, value);
                 if (beta <= alpha) {
