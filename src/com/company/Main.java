@@ -13,7 +13,7 @@ public class Main {
         Board board = new Board();
         Game game = new Game(board, turn, red, blue, middle);
         long start = currentTimeMillis();
-        System.out.println(game.alphabeta(1, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        System.out.println(game.board.perft(7, game));
         System.out.println(currentTimeMillis() - start);
     }
 

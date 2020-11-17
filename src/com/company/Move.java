@@ -2,12 +2,14 @@ package com.company;
 
 public class Move {
 
-    private Card card;
-    private int x;
-    private int y;
+    Card card;
+    Offset offset;
+    int x;
+    int y;
 
-    public Move(Card card, int x, int y) {
+    public Move(Card card, Offset offset, int x, int y) {
         this.card = card;
+        this.offset = offset;
         this.x = x;
         this.y = y;
     }

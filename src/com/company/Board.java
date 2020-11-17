@@ -26,11 +26,16 @@ public class Board {
     }
 
 
+    Boolean validMove(Move move) {
+        return validMove(move.offset, move.x, move.y);
+    }
+
     Boolean validMove(Offset offset, int x, int y) {
         boolean yOnBoard = (y + offset.y < 5) && (y + offset.y > -1);
         boolean xOnBoard = (x + offset.x < 5) && (x + offset.x > -1);
         return yOnBoard && xOnBoard && (this.board[y][x].color != this.board[y + offset.y][x + offset.x].color);
     }
+
 
     Board applyMove(Offset offset, int x, int y) {
         Board res = new Board(this);
@@ -49,6 +54,19 @@ public class Board {
         long res = 0;
         ArrayList<Game> games = game.notAMoveGen();
         for (Game newGame : games) {
+            res += perft(depth - 1, newGame);
+        }
+        return res;
+    }
+
+    long perft2(int depth, Game game) {
+        if (depth == 0 || game.board.gameOver) {
+            return 1;
+        }
+        long res = 0;
+        ArrayList<Move> moves = game.moveGen();
+        for (Move newMove : moves) {
+            Game newGame = game.applyMove(newMove);
             res += perft(depth - 1, newGame);
         }
         return res;

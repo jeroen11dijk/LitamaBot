@@ -59,6 +59,46 @@ public class Game {
         return res;
     }
 
+    ArrayList<Move> moveGen() {
+        ArrayList<Move> res = new ArrayList<Move>();
+        for (int y = 0; y < 5; y++) {
+            for (int x = 0; x < 5; x++) {
+                if (this.board.board[y][x].color == this.turn) {
+                    for (Offset offset : this.currentHand.first.offsets) {
+                        Move move = new Move(this.currentHand.first, offset, x, y);
+                        if(board.validMove(move)) {
+                            res.add(move);
+                        }
+                    }
+                    for (Offset offset : this.currentHand.second.offsets) {
+                        Move move = new Move(this.currentHand.second, offset, x, y);
+                        if(board.validMove(move)) {
+                            res.add(move);
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    Game applyMove(Move move) {
+        Board board = this.board.applyMove(move.offset, move.x, move.y);
+        Color newTurn = this.turn == Color.RED ? Color.BLUE : Color.RED;
+        Hand newHand;
+        if (this.currentHand.first == move.card) {
+            newHand = new Hand(this.middle, this.currentHand.second, this.turn);
+        } else {
+            newHand = new Hand(this.middle, this.currentHand.first, this.turn);
+        }
+        Card newMiddle = move.card;
+        if (this.turn == Color.RED) {
+            return new Game(board, newTurn, newHand, new Hand(this.blue.first, this.blue.second, Color.BLUE), newMiddle);
+        } else {
+            return new Game(board, newTurn, new Hand(this.red.first, this.red.second, Color.RED), newHand, newMiddle);
+        }
+    }
+
     int evaluate() {
         if (this.board.gameOver) {
             return Integer.MAX_VALUE;
