@@ -2,9 +2,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class GameTest {
+class GameTest {
 
-    Game setUp(){
+    Game setUp() {
         Hand blue = new Hand(Card.OX, Card.BOAR, Color.BLUE);
         Hand red = new Hand(Card.HORSE, Card.ELEPHANT, Color.RED);
         Card middle = Card.CRAB;
@@ -14,44 +14,50 @@ public class GameTest {
     }
 
     @Test
-    public void TestPerft0() {
+    void TestPerft0() {
         Game game = setUp();
         assertEquals(1, game.perft(0));
     }
 
     @Test
-    public void TestPerft1() {
+    void TestPerft1() {
         Game game = setUp();
         assertEquals(10, game.perft(1));
     }
 
     @Test
-    public void TestPerft2() {
+    void TestPerft2() {
         Game game = setUp();
         assertEquals(130, game.perft(2));
     }
 
     @Test
-    public void TestPerft3() {
+    void TestPerft3() {
         Game game = setUp();
         assertEquals(1989, game.perft(3));
     }
 
     @Test
-    public void TestPerft4() {
+    void TestPerft4() {
         Game game = setUp();
         assertEquals(28509, game.perft(4));
     }
 
     @Test
-    public void TestPerft5() {
+    void TestPerft5() {
         Game game = setUp();
         assertEquals(487780, game.perft(5));
     }
 
     @Test
-    public void TestPerft6() {
+    void TestPerft6() {
         Game game = setUp();
         assertEquals(7748422, game.perft(6));
+    }
+
+    @Test
+    void evaluateStart(){
+        Game game = setUp();
+        assertEquals(15, game.evaluate());
     }
 }

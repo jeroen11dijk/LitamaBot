@@ -11,7 +11,7 @@ public class Main {
         Board board = new Board();
         Game game = new Game(board, turn, red, blue, middle);
         long start = currentTimeMillis();
-        System.out.println(game.alphabeta(2, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        System.out.println(game.alphabeta(6, Integer.MIN_VALUE, Integer.MAX_VALUE));
         System.out.println(currentTimeMillis() - start);
     }
 

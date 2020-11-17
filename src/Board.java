@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
@@ -21,6 +20,7 @@ public class Board {
             newBoard[i] = board.board[i].clone();
         }
         this.board = newBoard;
+        this.gameOver = board.gameOver;
     }
 
 
@@ -39,7 +39,7 @@ public class Board {
         Board res = new Board(this);
         res.board[y + offset.y][x + offset.x] = res.board[y][x];
         res.board[y][x] = Piece.EMPTY;
-        if(this.board[y + offset.y][x + offset.x] == Piece.REDOX || this.board[y + offset.y][x + offset.x] == Piece.BLUEFIRE) {
+        if (this.board[y + offset.y][x + offset.x] == Piece.REDOX || this.board[y + offset.y][x + offset.x] == Piece.BLUEFIRE) {
             res.gameOver = true;
         }
         return res;

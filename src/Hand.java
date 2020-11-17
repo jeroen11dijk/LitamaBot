@@ -2,10 +2,12 @@ public class Hand {
 
     Card first;
     Card second;
+    Color color;
 
     Hand(Card first, Card second, Color color) {
         this.first = first;
         this.second = second;
+        this.color = color;
     }
 
     @Override

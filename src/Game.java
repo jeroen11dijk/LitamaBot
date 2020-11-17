@@ -6,7 +6,7 @@ import static java.lang.Math.min;
 
 public class Game {
 
-    Board board;
+    private Board board;
     private Color turn;
     private Hand red;
     private Hand blue;
@@ -22,7 +22,7 @@ public class Game {
         this.currentHand = this.turn == Color.RED ? this.red : this.blue;
     }
 
-    ArrayList<Move> moveGen() {
+    private ArrayList<Move> moveGen() {
         ArrayList<Move> res = new ArrayList<Move>();
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 5; x++) {
@@ -32,7 +32,7 @@ public class Game {
                             offset = offset.invert();
                         }
                         Move move = new Move(this.currentHand.first, offset, x, y);
-                        if(board.validMove(move)) {
+                        if (board.validMove(move)) {
                             res.add(move);
                         }
                     }
@@ -41,7 +41,7 @@ public class Game {
                             offset = offset.invert();
                         }
                         Move move = new Move(this.currentHand.second, offset, x, y);
-                        if(board.validMove(move)) {
+                        if (board.validMove(move)) {
                             res.add(move);
                         }
                     }
@@ -51,7 +51,7 @@ public class Game {
         return res;
     }
 
-    Game applyMove(Move move) {
+    private Game applyMove(Move move) {
         Board board = this.board.applyMove(move.offset, move.x, move.y);
         Color newTurn = this.turn == Color.RED ? Color.BLUE : Color.RED;
         Hand newHand;
@@ -91,49 +91,46 @@ public class Game {
                 }
             }
         }
-        for (int [] column : canReach) {
-            for (int i :column) {
-                res += 2*i;
+        for (int[] column : canReach) {
+            for (int i : column) {
+                res += 2 * i;
             }
         }
         return res;
     }
 
-    private void addGame(ArrayList<Game> res, Board board, Color newTurn, Hand change, Card newMiddle) {
-        if (this.turn == Color.RED) {
-            res.add(new Game(board, newTurn, change, new Hand(this.blue.first, this.blue.second, Color.BLUE), newMiddle));
-        } else {
-            res.add(new Game(board, newTurn, new Hand(this.red.first, this.red.second, Color.RED), change, newMiddle));
-        }
-    }
-
-    public int alphabeta(int depth, int alpha, int beta) {
+    Evaluation alphabeta(int depth, int alpha, int beta) {
         if (depth == 0 || this.board.gameOver) {
-            return this.evaluate();
+            return new Evaluation(null, this.evaluate());
         }
         if (this.turn == Color.BLUE) {
-            int value = Integer.MIN_VALUE;
+            Move bestMove = null;
             for (Move move : this.moveGen()) {
                 Game newGame = this.applyMove(move);
-                value = max(value, newGame.alphabeta(depth - 1, alpha, beta));
-                alpha = max(alpha, value);
-                if (alpha >= beta) {
-                    break;
+                Evaluation eval = newGame.alphabeta(depth - 1, alpha, beta);
+                if (eval.score > alpha) {
+                    alpha = eval.score;
+                    bestMove = move;
+                    if (alpha >= beta) {
+                        break;
+                    }
                 }
             }
-            return value;
-        }
-        else {
-            int value = Integer.MAX_VALUE;
+            return new Evaluation(bestMove, alpha);
+        } else {
+            Move bestMove = null;
             for (Move move : this.moveGen()) {
                 Game newGame = this.applyMove(move);
-                value = min(value, newGame.alphabeta(depth - 1, alpha, beta));
-                beta = min(beta, value);
-                if (beta <= alpha) {
-                    break;
+                Evaluation eval = newGame.alphabeta(depth - 1, alpha, beta);
+                if (eval.score < beta) {
+                    beta = eval.score;
+                    bestMove = move;
+                    if (beta <= alpha) {
+                        break;
+                    }
                 }
             }
-            return value;
+            return new Evaluation(bestMove, beta);
         }
     }
 
