@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class Board {
 
     Piece[][] board;
-    private boolean gameOver = false;
+    boolean gameOver = false;
 
     Board() {
         this.board = new Piece[][]{

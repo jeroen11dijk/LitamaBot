@@ -1,5 +1,6 @@
 package com.company;
 
+import static java.lang.System.currentTimeMillis;
 
 public class Main {
 
@@ -11,15 +12,9 @@ public class Main {
         Color turn = middle.color;
         Board board = new Board();
         Game game = new Game(board, turn, red, blue, middle);
-        long time = System.nanoTime();
-        long res = board.perft(7, game);
-        float time2 = (System.nanoTime() - time) / 1000000000.f;
-        System.out.println(time2);
-        System.out.println(res);
-        System.out.println(res / time2);
-//        for (Game newGame : game.notAMoveGen()) {
-//            System.out.println(newGame);
-//        }
+        long start = currentTimeMillis();
+        System.out.println(game.alphabeta(1, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        System.out.println(currentTimeMillis() - start);
     }
 
     // blue = ox, boar, red = horse, elephant, side = crab
