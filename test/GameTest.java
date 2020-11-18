@@ -154,18 +154,4 @@ class GameTest {
         game = game.applyMove(game.negamaxRoot(10));
         assertTrue(game.board.gameOver);
     }
-
-//    @Test
-//    void mateIn6Red() {
-//        Hand blue = new Hand(Card.GOOSE, Card.EEL, Color.BLUE);
-//        Hand red = new Hand(Card.HORSE, Card.DRAGON, Color.RED);
-//        Card middle = Card.FROG;
-//        Color turn = middle.color;
-//        Board board = new Board(Main.parseString("0000000210000000043000000"));
-//        Game game = new Game(board, turn, Color.RED, red, blue, middle);
-//        for (int i = 0; i < 5; i++) {
-//            game = game.applyMove(game.negamaxRoot(10));
-//        }
-//        assertTrue(game.board.gameOver);
-//    }
 }

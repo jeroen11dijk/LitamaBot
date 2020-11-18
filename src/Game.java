@@ -92,8 +92,6 @@ public class Game {
         int color = this.turn == Color.RED ? -1 : 1;
         for (Move move : this.moveGen()) {
             int newValue = -this.applyMove(move).negamaxRec(depth - 1, -beta, -alpha, -color);
-            System.out.println(move);
-            System.out.println(newValue);
             if (newValue > value) {
                 res = move;
                 value = newValue;

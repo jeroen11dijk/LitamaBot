@@ -1,17 +1,18 @@
+import org.java_websocket.client.WebSocketClient;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+
 public class Main {
 
     public static void main(String[] args) {
-        // https://discordapp.com/channels/348658686962696195/424610429634084867/772901206414065715
-        Hand blue = new Hand(Card.OX, Card.BOAR, Color.BLUE);
-        Hand red = new Hand(Card.HORSE, Card.ELEPHANT, Color.RED);
-        Card middle = Card.CRAB;
-        Color turn = middle.color;
-        Board board = new Board();
-        Game game = new Game(board, turn, Color.BLUE, red, blue, middle);
-        System.out.println(game.negamaxRoot(10));
-//        game = game.applyMove(openingMoveBlue);
-//        Move openingMoveRed = game.alphabeta(6, Integer.MIN_VALUE, Integer.MAX_VALUE).move;
-//        System.out.println(openingMoveRed);
+        WebSocketClient client = null;
+        try {
+            client = new OnitamaClient(new URI("wss://litama.herokuapp.com"));
+            client.connect();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     public static Piece[][] parseString(String board) {
