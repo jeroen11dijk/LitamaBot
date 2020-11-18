@@ -1,9 +1,11 @@
 import java.util.ArrayList;
 
+import static java.lang.Math.max;
+
 
 public class Game {
 
-    private Board board;
+    Board board;
     private Color turn;
     private Hand red;
     private Hand blue;
@@ -48,7 +50,7 @@ public class Game {
         return res;
     }
 
-    private Game applyMove(Move move) {
+    Game applyMove(Move move) {
         Board board = this.board.applyMove(move.offset, move.x, move.y);
         Color newTurn = this.turn == Color.RED ? Color.BLUE : Color.RED;
         Hand newHand;
@@ -100,39 +102,41 @@ public class Game {
         return res;
     }
 
-    Evaluation alphabeta(int depth, int alpha, int beta) {
+    Move negamaxRoot(int depth, int alpha, int beta) {
+        Move res = null;
+        Evaluation bestEval = new Evaluation(Integer.MIN_VALUE, Integer.MAX_VALUE);
+        for (Move move : this.moveGen()) {
+            Evaluation moveEval = this.applyMove(move).negamaxRec(depth - 1, -beta, -alpha, -1);
+            moveEval.value = -moveEval.value;
+            if(moveEval.compareTo(bestEval)) {
+                res= move;
+                bestEval = moveEval;
+            }
+            alpha = max(alpha, bestEval.value);
+            if (alpha > beta) {
+                break;
+            }
+        }
+        return res;
+    }
+
+    Evaluation negamaxRec(int depth, int alpha, int beta, int color) {
         if (depth == 0 || this.board.gameOver) {
-            return new Evaluation(null, this.evaluate());
+            return new Evaluation(color * this.evaluate(), depth);
         }
-        if (this.turn == Color.BLUE) {
-            Move bestMove = null;
-            for (Move move : this.moveGen()) {
-                Game newGame = this.applyMove(move);
-                Evaluation eval = newGame.alphabeta(depth - 1, alpha, beta);
-                if (eval.score >= alpha) {
-                    alpha = eval.score;
-                    bestMove = move;
-                    if (alpha >= beta) {
-                        break;
-                    }
-                }
+        Evaluation res = new Evaluation(Integer.MIN_VALUE, Integer.MAX_VALUE);
+        for (Move move : this.moveGen()) {
+            Evaluation moveEval = this.applyMove(move).negamaxRec(depth - 1, -beta, -alpha, -color);
+            moveEval.value = -moveEval.value;
+            if(moveEval.compareTo(res)) {
+                res = moveEval;
             }
-            return new Evaluation(bestMove, alpha);
-        } else {
-            Move bestMove = null;
-            for (Move move : this.moveGen()) {
-                Game newGame = this.applyMove(move);
-                Evaluation eval = newGame.alphabeta(depth - 1, alpha, beta);
-                if (eval.score <= beta) {
-                    beta = eval.score;
-                    bestMove = move;
-                    if (beta <= alpha) {
-                        break;
-                    }
-                }
+            alpha = max(moveEval.value, alpha);
+            if (alpha >= beta) {
+                break;
             }
-            return new Evaluation(bestMove, beta);
         }
+        return res;
     }
 
     long perft(int depth) {

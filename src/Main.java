@@ -8,9 +8,7 @@ public class Main {
         Color turn = middle.color;
         Board board = new Board();
         Game game = new Game(board, turn, red, blue, middle);
-        game.alphabeta(1, Integer.MIN_VALUE, Integer.MAX_VALUE);
-//        Move openingMoveBlue = game.alphabeta(6, Integer.MIN_VALUE, Integer.MAX_VALUE).move;
-//        System.out.println(openingMoveBlue);
+        System.out.println(game.negamaxRoot(2, Integer.MIN_VALUE, Integer.MAX_VALUE));
 //        game = game.applyMove(openingMoveBlue);
 //        Move openingMoveRed = game.alphabeta(6, Integer.MIN_VALUE, Integer.MAX_VALUE).move;
 //        System.out.println(openingMoveRed);

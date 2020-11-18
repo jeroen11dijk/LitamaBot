@@ -1,18 +1,22 @@
 public class Evaluation {
 
-    private Move move;
-    int score;
+    int value;
+    int depth;
 
-    Evaluation(Move move, int score) {
-        this.move = move;
-        this.score = score;
+    Evaluation(int score, int depth) {
+        this.value = score;
+        this.depth = depth;
+    }
+
+    boolean compareTo(Evaluation other) {
+        return this.value > other.value || (this.value == other.value && this.depth > other.depth);
     }
 
     @Override
     public String toString() {
         return "Evaluation{" +
-                "move=" + move +
-                ", score=" + score +
+                "value=" + value +
+                ", depth=" + depth +
                 '}';
     }
 }

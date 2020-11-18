@@ -1,8 +1,8 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLOutput;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
@@ -60,14 +60,14 @@ class GameTest {
     @Test
     void evaluateStart(){
         Game game = setUp();
-        assertEquals(15, game.evaluate());
+        assertEquals(10, game.evaluate());
     }
 
     @Test
-    void mateIn1() {
-        Hand blue = new Hand(Card.TIGER, Card.BOAR, Color.BLUE);
-        Hand red = new Hand(Card.HORSE, Card.ELEPHANT, Color.RED);
-        Card middle = Card.CRAB;
+    void mateIn1Blue() {
+        Hand blue = new Hand(Card.ROOSTER, Card.CRANE, Color.BLUE);
+        Hand red = new Hand(Card.MANTIS, Card.FROG, Color.RED);
+        Card middle = Card.TIGER;
         Color turn = middle.color;
         Piece[][] boardPiece = new Piece[][]{
                 {Piece.BLUE, Piece.BLUE, Piece.BLUEFIRE, Piece.EMPTY, Piece.BLUE},
@@ -77,16 +77,83 @@ class GameTest {
                 {Piece.RED, Piece.RED, Piece.REDOX, Piece.RED, Piece.RED}};
         Board board = new Board(boardPiece);
         Game game = new Game(board, turn, red, blue, middle);
-        Evaluation opening = game.alphabeta(2, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        System.out.println(opening);
-//        int i = 0;
-//        while(!game.board.gameOver) {
-//            System.out.println("Move: " + i);
-//            Move move = game.alphabeta2(7, Integer.MIN_VALUE, Integer.MAX_VALUE).move;
-//            System.out.println(move);
-//            game = game.applyMove(move);
-//            System.out.println(game);
-//            i++;
-//        }
+        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        assertTrue(game.board.gameOver);
+    }
+
+    @Test
+    void mateIn2Blue() {
+        Hand blue = new Hand(Card.ROOSTER, Card.CRANE, Color.BLUE);
+        Hand red = new Hand(Card.CRANE, Card.DRAGON, Color.RED);
+        Card middle = Card.TIGER;
+        Color turn = middle.color;
+        Piece[][] boardPiece = new Piece[][]{
+                {Piece.BLUE, Piece.BLUE, Piece.BLUEFIRE, Piece.BLUE, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.BLUE},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.REDOX}};
+        Board board = new Board(boardPiece);
+        Game game = new Game(board, turn, red, blue, middle);
+        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        assertTrue(game.board.gameOver);
+    }
+
+    @Test
+    void unavoidableMateForBlue() {
+        Hand blue = new Hand(Card.FROG, Card.HORSE, Color.BLUE);
+        Hand red = new Hand(Card.CRAB, Card.RABBIT, Color.RED);
+        Card middle = Card.EEL;
+        Color turn = middle.color;
+        Piece[][] boardPiece = new Piece[][]{
+                {Piece.BLUEFIRE, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.RED, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.RED, Piece.REDOX, Piece.RED, Piece.RED}};
+        Board board = new Board(boardPiece);
+        Game game = new Game(board, turn, red, blue, middle);
+        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        assertTrue(game.board.gameOver);
+    }
+
+    @Test
+    void avoidableMateForBlue() {
+        Hand blue = new Hand(Card.FROG, Card.OX, Color.BLUE);
+        Hand red = new Hand(Card.CRAB, Card.RABBIT, Color.RED);
+        Card middle = Card.EEL;
+        Color turn = middle.color;
+        Piece[][] boardPiece = new Piece[][]{
+                {Piece.BLUEFIRE, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.RED, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.RED, Piece.REDOX, Piece.RED, Piece.RED}};
+        Board board = new Board(boardPiece);
+        Game game = new Game(board, turn, red, blue, middle);
+        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        assertFalse(game.board.gameOver);
+    }
+
+    @Test
+    void mateIn1Red() {
+        Hand blue = new Hand(Card.RABBIT, Card.MONKEY, Color.BLUE);
+        Hand red = new Hand(Card.GOOSE, Card.COBRA, Color.RED);
+        Card middle = Card.DRAGON;
+        Color turn = middle.color;
+        Piece[][] boardPiece = new Piece[][]{
+                {Piece.BLUE, Piece.BLUE, Piece.BLUEFIRE, Piece.EMPTY, Piece.BLUE},
+                {Piece.EMPTY, Piece.RED, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.BLUE, Piece.EMPTY, Piece.EMPTY},
+                {Piece.RED, Piece.RED, Piece.REDOX, Piece.EMPTY, Piece.RED}};
+        Board board = new Board(boardPiece);
+        Game game = new Game(board, turn, red, blue, middle);
+        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        assertTrue(game.board.gameOver);
     }
 }
