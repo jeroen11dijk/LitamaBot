@@ -41,4 +41,36 @@ public class Main {
     }
 
     // blue = ox, boar, red = horse, elephant, side = crab
+
+//    int evaluate() {
+//        Color skipTurn = this.turn == Color.RED ? Color.BLUE : Color.RED;
+//        Hand skipHand = this.turn == Color.RED ? this.blue : this.red;
+//        int res = 0;
+//        int[][] canReach = new int[5][5];
+//        for (int y = 0; y < 5; y++) {
+//            for (int x = 0; x < 5; x++) {
+//                if (this.board.board[y][x].color == skipTurn) {
+//                    res += 3;
+//                    for (Offset offset : skipHand.first.offsets) {
+//                        if (this.board.validMove(offset, x, y)) {
+//                            canReach[y + offset.y][x + offset.x] = 1;
+//                        }
+//                    }
+//                    for (Offset offset : skipHand.second.offsets) {
+//                        if (this.board.validMove(offset, x, y)) {
+//                            canReach[y + offset.y][x + offset.x] = 1;
+//                        }
+//                    }
+//                } else if (this.board.board[y][x].color == this.turn) {
+//                    res -= 3;
+//                }
+//            }
+//        }
+//        for (int[] column : canReach) {
+//            for (int i : column) {
+//                res += 2 * i;
+//            }
+//        }
+//        return res;
+//    }
 }

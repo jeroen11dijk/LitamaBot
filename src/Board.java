@@ -45,13 +45,25 @@ public class Board {
         Board res = new Board(this);
         res.board[y + offset.y][x + offset.x] = res.board[y][x];
         res.board[y][x] = Piece.EMPTY;
-        if (this.board[y + offset.y][x + offset.x] == Piece.REDOX ) {
+        if (this.board[y + offset.y][x + offset.x] == Piece.REDOX) {
             res.gameOver = true;
             res.winner = Color.BLUE;
         }
-        if(this.board[y + offset.y][x + offset.x] == Piece.BLUEFIRE) {
+        if (this.board[y + offset.y][x + offset.x] == Piece.BLUEFIRE) {
             res.gameOver = true;
             res.winner = Color.RED;
+        }
+        return res;
+    }
+
+    public int nPieces(Color color) {
+        int res = 0;
+        for (int y = 0; y < 5; y++) {
+            for (int x = 0; x < 5; x++) {
+                if(board[y][x].color == color) {
+                    res++;
+                }
+            }
         }
         return res;
     }

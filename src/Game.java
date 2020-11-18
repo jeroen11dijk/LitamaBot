@@ -71,47 +71,27 @@ public class Game {
     }
 
     int evaluate(int depth) {
-        Color skipTurn = this.turn == Color.RED ? Color.BLUE : Color.RED;
-        Hand skipHand = this.turn == Color.RED ? this.blue : this.red;
-        if (this.board.gameOver) {
+        if (this.board.gameOver && this.board.winner == Color.BLUE) {
             return HIGH + depth;
         }
+        if (this.board.gameOver && this.board.winner == Color.RED) {
+            return -HIGH - depth;
+        }
+
         int res = 0;
-        int[][] canReach = new int[5][5];
-        for (int y = 0; y < 5; y++) {
-            for (int x = 0; x < 5; x++) {
-                if (this.board.board[y][x].color == skipTurn) {
-                    res += 3;
-                    for (Offset offset : skipHand.first.offsets) {
-                        if (this.board.validMove(offset, x, y)) {
-                            canReach[y + offset.y][x + offset.x] = 1;
-                        }
-                    }
-                    for (Offset offset : skipHand.second.offsets) {
-                        if (this.board.validMove(offset, x, y)) {
-                            canReach[y + offset.y][x + offset.x] = 1;
-                        }
-                    }
-                } else if (this.board.board[y][x].color == this.turn) {
-                    res -= 3;
-                }
-            }
-        }
-        for (int[] column : canReach) {
-            for (int i : column) {
-                res += 2 * i;
-            }
-        }
+        res += this.board.nPieces(Color.BLUE);
+        res -= this.board.nPieces(Color.RED);
         return res;
     }
 
     Move negamaxRoot(int depth) {
         Move res = null;
-        int alpha = -HIGH - depth + 1;
-        int beta = HIGH + depth - 1;
+        int alpha = Integer.MIN_VALUE;
+        int beta = Integer.MAX_VALUE;
         int value = Integer.MIN_VALUE;
+        int color = this.turn == Color.RED ? -1 : 1;
         for (Move move : this.moveGen()) {
-            int newValue = -this.applyMove(move).negamaxRec(depth - 1, -beta, -alpha, -1);
+            int newValue = -this.applyMove(move).negamaxRec(depth - 1, -beta, -alpha, -color);
             System.out.println(move);
             System.out.println(newValue);
             if (newValue > value) {
@@ -132,7 +112,8 @@ public class Game {
         }
         int res = Integer.MIN_VALUE;
         for (Move move : this.moveGen()) {
-            res = max(res, -this.applyMove(move).negamaxRec(depth - 1, -beta, -alpha, -color));
+            Game newGame = this.applyMove(move);
+            res = max(res, -newGame.negamaxRec(depth - 1, -beta, -alpha, -color));
             alpha = max(res, alpha);
             if (alpha >= beta) {
                 break;
