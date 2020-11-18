@@ -1,7 +1,5 @@
 import org.junit.jupiter.api.Test;
 
-import java.sql.SQLOutput;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
@@ -12,7 +10,7 @@ class GameTest {
         Card middle = Card.CRAB;
         Color turn = middle.color;
         Board board = new Board();
-        return new Game(board, turn, red, blue, middle);
+        return new Game(board, turn, Color.BLUE, red, blue, middle);
     }
 
     @Test
@@ -60,7 +58,7 @@ class GameTest {
     @Test
     void evaluateStart(){
         Game game = setUp();
-        assertEquals(10, game.evaluate());
+        assertEquals(10, game.evaluate(10));
     }
 
     @Test
@@ -76,8 +74,8 @@ class GameTest {
                 {Piece.EMPTY, Piece.EMPTY, Piece.BLUE, Piece.EMPTY, Piece.EMPTY},
                 {Piece.RED, Piece.RED, Piece.REDOX, Piece.RED, Piece.RED}};
         Board board = new Board(boardPiece);
-        Game game = new Game(board, turn, red, blue, middle);
-        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        Game game = new Game(board, turn, Color.BLUE, red, blue, middle);
+        game = game.applyMove(game.negamaxRoot(9));
         assertTrue(game.board.gameOver);
     }
 
@@ -94,10 +92,10 @@ class GameTest {
                 {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
                 {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.REDOX}};
         Board board = new Board(boardPiece);
-        Game game = new Game(board, turn, red, blue, middle);
-        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
-        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
-        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        Game game = new Game(board, turn, Color.BLUE, red, blue, middle);
+        game = game.applyMove(game.negamaxRoot(10));
+        game = game.applyMove(game.negamaxRoot(10));
+        game = game.applyMove(game.negamaxRoot(10));
         assertTrue(game.board.gameOver);
     }
 
@@ -114,9 +112,10 @@ class GameTest {
                 {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
                 {Piece.EMPTY, Piece.RED, Piece.REDOX, Piece.RED, Piece.RED}};
         Board board = new Board(boardPiece);
-        Game game = new Game(board, turn, red, blue, middle);
-        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
-        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        Game game = new Game(board, turn, Color.BLUE, red, blue, middle);
+        game = game.applyMove(game.negamaxRoot(10));
+        System.out.println(game.negamaxRoot(10));
+        game = game.applyMove(game.negamaxRoot(10));
         assertTrue(game.board.gameOver);
     }
 
@@ -133,9 +132,9 @@ class GameTest {
                 {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
                 {Piece.EMPTY, Piece.RED, Piece.REDOX, Piece.RED, Piece.RED}};
         Board board = new Board(boardPiece);
-        Game game = new Game(board, turn, red, blue, middle);
-        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
-        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        Game game = new Game(board, turn, Color.BLUE, red, blue, middle);
+        game = game.applyMove(game.negamaxRoot(2));
+//        game = game.applyMove(game.negamaxRoot(10));
         assertFalse(game.board.gameOver);
     }
 
@@ -152,8 +151,22 @@ class GameTest {
                 {Piece.EMPTY, Piece.EMPTY, Piece.BLUE, Piece.EMPTY, Piece.EMPTY},
                 {Piece.RED, Piece.RED, Piece.REDOX, Piece.EMPTY, Piece.RED}};
         Board board = new Board(boardPiece);
-        Game game = new Game(board, turn, red, blue, middle);
-        game = game.applyMove(game.negamaxRoot(10, Integer.MIN_VALUE, Integer.MAX_VALUE));
+        Game game = new Game(board, turn, Color.RED, red, blue, middle);
+        game = game.applyMove(game.negamaxRoot(10));
+        assertTrue(game.board.gameOver);
+    }
+
+    @Test
+    void mateIn7Red() {
+        Hand blue = new Hand(Card.GOOSE, Card.EEL, Color.BLUE);
+        Hand red = new Hand(Card.HORSE, Card.DRAGON, Color.RED);
+        Card middle = Card.FROG;
+        Color turn = middle.color;
+        Board board = new Board(Main.parseString("0000000210000000043000000"));
+        Game game = new Game(board, turn, Color.RED, red, blue, middle);
+        for (int i = 0; i < 3; i++) {
+            game = game.applyMove(game.negamaxRoot(10));
+        }
         assertTrue(game.board.gameOver);
     }
 }

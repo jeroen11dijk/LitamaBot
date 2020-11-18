@@ -2,26 +2,29 @@ import java.util.ArrayList;
 
 import static java.lang.Math.max;
 
-
 public class Game {
+
+    public int HIGH = 100000;
 
     Board board;
     private Color turn;
+    private Color me;
     private Hand red;
     private Hand blue;
     private Card middle;
     private Hand currentHand;
 
-    Game(Board board, Color turn, Hand red, Hand blue, Card middle) {
+    Game(Board board, Color turn, Color me, Hand red, Hand blue, Card middle) {
         this.board = board;
         this.turn = turn;
+        this.me = me;
         this.red = red;
         this.blue = blue;
         this.middle = middle;
         this.currentHand = this.turn == Color.RED ? this.red : this.blue;
     }
 
-    private ArrayList<Move> moveGen() {
+    ArrayList<Move> moveGen() {
         ArrayList<Move> res = new ArrayList<Move>();
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 5; x++) {
@@ -61,22 +64,22 @@ public class Game {
         }
         Card newMiddle = move.card;
         if (this.turn == Color.RED) {
-            return new Game(board, newTurn, newHand, new Hand(this.blue.first, this.blue.second, Color.BLUE), newMiddle);
+            return new Game(board, newTurn, this.me, newHand, new Hand(this.blue.first, this.blue.second, Color.BLUE), newMiddle);
         } else {
-            return new Game(board, newTurn, new Hand(this.red.first, this.red.second, Color.RED), newHand, newMiddle);
+            return new Game(board, newTurn, this.me, new Hand(this.red.first, this.red.second, Color.RED), newHand, newMiddle);
         }
     }
 
-    int evaluate() {
+    int evaluate(int depth) {
+        Color skipTurn = this.turn == Color.RED ? Color.BLUE : Color.RED;
+        Hand skipHand = this.turn == Color.RED ? this.blue : this.red;
         if (this.board.gameOver) {
-            return Integer.MAX_VALUE;
+            return HIGH + depth;
         }
         int res = 0;
         int[][] canReach = new int[5][5];
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 5; x++) {
-                Color skipTurn = this.turn == Color.RED ? Color.BLUE : Color.RED;
-                Hand skipHand = this.turn == Color.RED ? this.blue : this.red;
                 if (this.board.board[y][x].color == skipTurn) {
                     res += 3;
                     for (Offset offset : skipHand.first.offsets) {
@@ -102,36 +105,35 @@ public class Game {
         return res;
     }
 
-    Move negamaxRoot(int depth, int alpha, int beta) {
+    Move negamaxRoot(int depth) {
         Move res = null;
-        Evaluation bestEval = new Evaluation(Integer.MIN_VALUE, Integer.MAX_VALUE);
+        int alpha = -HIGH - depth + 1;
+        int beta = HIGH + depth - 1;
+        int value = Integer.MIN_VALUE;
         for (Move move : this.moveGen()) {
-            Evaluation moveEval = this.applyMove(move).negamaxRec(depth - 1, -beta, -alpha, -1);
-            moveEval.value = -moveEval.value;
-            if(moveEval.compareTo(bestEval)) {
-                res= move;
-                bestEval = moveEval;
+            int newValue = -this.applyMove(move).negamaxRec(depth - 1, -beta, -alpha, -1);
+            System.out.println(move);
+            System.out.println(newValue);
+            if (newValue > value) {
+                res = move;
+                value = newValue;
             }
-            alpha = max(alpha, bestEval.value);
-            if (alpha > beta) {
+            alpha = max(value, alpha);
+            if (alpha >= beta) {
                 break;
             }
         }
         return res;
     }
 
-    Evaluation negamaxRec(int depth, int alpha, int beta, int color) {
+    Integer negamaxRec(int depth, int alpha, int beta, int color) {
         if (depth == 0 || this.board.gameOver) {
-            return new Evaluation(color * this.evaluate(), depth);
+            return color * this.evaluate(depth);
         }
-        Evaluation res = new Evaluation(Integer.MIN_VALUE, Integer.MAX_VALUE);
+        int res = Integer.MIN_VALUE;
         for (Move move : this.moveGen()) {
-            Evaluation moveEval = this.applyMove(move).negamaxRec(depth - 1, -beta, -alpha, -color);
-            moveEval.value = -moveEval.value;
-            if(moveEval.compareTo(res)) {
-                res = moveEval;
-            }
-            alpha = max(moveEval.value, alpha);
+            res = max(res, -this.applyMove(move).negamaxRec(depth - 1, -beta, -alpha, -color));
+            alpha = max(res, alpha);
             if (alpha >= beta) {
                 break;
             }
@@ -155,7 +157,7 @@ public class Game {
     @Override
     public String toString() {
         return "Game{" +
-                "board=" + board +
+                "board=" + "\n" + board +
                 ", turn=" + turn +
                 ", red=" + red +
                 ", blue=" + blue +

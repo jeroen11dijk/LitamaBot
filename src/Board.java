@@ -4,6 +4,7 @@ public class Board {
 
     Piece[][] board;
     boolean gameOver = false;
+    Color winner = Color.PURPLE;
 
     Board() {
         this.board = new Piece[][]{
@@ -21,6 +22,7 @@ public class Board {
         }
         this.board = newBoard;
         this.gameOver = board.gameOver;
+        this.winner = board.winner;
     }
 
     Board(Piece[][] board) {
@@ -43,13 +45,25 @@ public class Board {
         Board res = new Board(this);
         res.board[y + offset.y][x + offset.x] = res.board[y][x];
         res.board[y][x] = Piece.EMPTY;
-        if (this.board[y + offset.y][x + offset.x] == Piece.REDOX || this.board[y + offset.y][x + offset.x] == Piece.BLUEFIRE) {
+        if (this.board[y + offset.y][x + offset.x] == Piece.REDOX ) {
             res.gameOver = true;
+            res.winner = Color.BLUE;
+        }
+        if(this.board[y + offset.y][x + offset.x] == Piece.BLUEFIRE) {
+            res.gameOver = true;
+            res.winner = Color.RED;
         }
         return res;
     }
 
     public String toString() {
-        return Arrays.deepToString(this.board);
+        String res = "";
+        for (int i = 4; i > -1; i--) {
+            res += Arrays.toString(this.board[i]);
+            if (i != 0) {
+                res += "\n";
+            }
+        }
+        return res;
     }
 }
