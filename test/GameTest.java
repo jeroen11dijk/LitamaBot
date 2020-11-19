@@ -77,6 +77,7 @@ class GameTest {
         Game game = new Game(board, turn, Color.BLUE, red, blue, middle);
         game = game.applyMove(game.negamaxRoot(5));
         assertTrue(game.board.gameOver);
+        assertEquals(Color.BLUE, game.board.winner);
     }
 
     @Test
@@ -97,6 +98,7 @@ class GameTest {
         game = game.applyMove(game.negamaxRoot(10));
         game = game.applyMove(game.negamaxRoot(10));
         assertTrue(game.board.gameOver);
+        assertEquals(Color.BLUE, game.board.winner);
     }
 
     @Test
@@ -116,6 +118,7 @@ class GameTest {
         game = game.applyMove(game.negamaxRoot(10));
         game = game.applyMove(game.negamaxRoot(1));
         assertTrue(game.board.gameOver);
+        assertEquals(Color.RED, game.board.winner);
     }
 
     @Test
@@ -132,8 +135,8 @@ class GameTest {
                 {Piece.EMPTY, Piece.RED, Piece.REDOX, Piece.RED, Piece.RED}};
         Board board = new Board(boardPiece);
         Game game = new Game(board, turn, Color.BLUE, red, blue, middle);
-        game = game.applyMove(game.negamaxRoot(2));
-//        game = game.applyMove(game.negamaxRoot(10));
+        game = game.applyMove(game.negamaxRoot(10));
+        game = game.applyMove(game.negamaxRoot(10));
         assertFalse(game.board.gameOver);
     }
 
@@ -153,5 +156,6 @@ class GameTest {
         Game game = new Game(board, turn, Color.RED, red, blue, middle);
         game = game.applyMove(game.negamaxRoot(10));
         assertTrue(game.board.gameOver);
+        assertEquals(Color.RED, game.board.winner);
     }
 }
