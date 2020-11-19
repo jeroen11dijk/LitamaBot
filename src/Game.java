@@ -54,6 +54,9 @@ public class Game {
     }
 
     Game applyMove(Move move) {
+        if(board.gameOver) {
+            return this;
+        }
         Board board = this.board.applyMove(move.offset, move.x, move.y);
         Color newTurn = this.turn == Color.RED ? Color.BLUE : Color.RED;
         Hand newHand;
