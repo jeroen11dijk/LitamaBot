@@ -19,7 +19,7 @@ public class MateTest {
                 {Piece.RED, Piece.RED, Piece.REDOX, Piece.RED, Piece.RED}};
         Board board = new Board(boardPiece);
         Game game = new Game(board, turn, Color.BLUE, red, blue, middle);
-        game = game.applyMove(game.negamaxRoot(5));
+        game = game.applyMove(game.negamaxRoot(10));
         assertTrue(game.board.gameOver);
         assertEquals(Color.BLUE, game.board.winner);
     }

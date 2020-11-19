@@ -53,6 +53,14 @@ public class Board {
             res.gameOver = true;
             res.winner = Color.RED;
         }
+        if (this.board[y][x] == Piece.REDOX && y + offset.y == 0 && x + offset.x == 2) {
+            res.gameOver = true;
+            res.winner = Color.RED;
+        }
+        if (this.board[y][x] == Piece.BLUEFIRE && y + offset.y == 4 && x + offset.x == 2) {
+            res.gameOver = true;
+            res.winner = Color.BLUE;
+        }
         return res;
     }
 

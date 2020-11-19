@@ -88,13 +88,17 @@ public class Game {
     }
 
     Move negamaxRoot(int depth) {
+        if(this.board.gameOver) {
+            return null;
+        }
         Move res = null;
         int alpha = Integer.MIN_VALUE;
         int beta = Integer.MAX_VALUE;
         int value = Integer.MIN_VALUE;
         int color = this.turn == Color.RED ? -1 : 1;
         for (Move move : this.moveGen()) {
-            int newValue = -this.applyMove(move).negamaxRec(depth - 1, -beta, -alpha, -color);
+            Game newGame = this.applyMove(move);
+            int newValue = -newGame.negamaxRec(depth - 1, -beta, -alpha, -color);
             if (newValue > value) {
                 res = move;
                 value = newValue;

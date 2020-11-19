@@ -25,5 +25,14 @@ enum Card {
         this.color = color;
         this.offsets = offsets;
     }
+
+    static Card getCard(String name) {
+        for (Card card : Card.values()) {
+            if (card.name.equals(name)) {
+                return card;
+            }
+        }
+        return null;
+    }
 }
 

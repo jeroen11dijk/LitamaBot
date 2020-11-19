@@ -109,9 +109,15 @@ public class GameTest {
         Piece[][] boardPiece = Main.parseString("2001000000003000400000000");
         Board board = new Board(boardPiece);
         Game game = new Game(board, turn, Color.RED, red, blue, middle);
-        for (int i = 1; i < 8; i++) {
-            game = game.applyMove(game.negamaxRoot(10));
-        }
+        Move move = game.negamaxRoot(10);
+        System.out.println("Move:" + move);
+        game = game.applyMove(move);
+        System.out.println(game);
+        move = game.negamaxRoot(10);
+        System.out.println("Move:" + move);
+//        for (int i = 1; i < 8; i++) {
+//            game = game.applyMove(game.negamaxRoot(10));
+//        }
         assertTrue(game.board.gameOver);
         assertEquals(Color.RED, game.board.winner);
     }
