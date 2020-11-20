@@ -92,15 +92,13 @@ public class Game {
             return null;
         }
         Move res = null;
-        int alpha = Integer.MIN_VALUE;
+        int alpha = -Integer.MAX_VALUE;
         int beta = Integer.MAX_VALUE;
         int value = Integer.MIN_VALUE;
         int color = this.turn == Color.RED ? -1 : 1;
         for (Move move : this.moveGen()) {
             Game newGame = this.applyMove(move);
             int newValue = -newGame.negamaxRec(depth - 1, -beta, -alpha, -color);
-            System.out.println(move);
-            System.out.println(newValue);
             if (newValue > value) {
                 res = move;
                 value = newValue;

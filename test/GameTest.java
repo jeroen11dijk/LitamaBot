@@ -109,15 +109,41 @@ public class GameTest {
         Piece[][] boardPiece = Main.parseString("2001000000003000400000000");
         Board board = new Board(boardPiece);
         Game game = new Game(board, turn, Color.RED, red, blue, middle);
-        Move move = game.negamaxRoot(10);
-        System.out.println("Move:" + move);
-        game = game.applyMove(move);
-        System.out.println(game);
-        move = game.negamaxRoot(10);
-        System.out.println("Move:" + move);
-//        for (int i = 1; i < 8; i++) {
-//            game = game.applyMove(game.negamaxRoot(10));
-//        }
+        for (int i = 1; i < 8; i++) {
+            game = game.applyMove(game.negamaxRoot(10));
+        }
+        assertTrue(game.board.gameOver);
+        assertEquals(Color.RED, game.board.winner);
+    }
+
+    @Test
+    void mateIn8RedBlueTurn() {
+        Hand blue = new Hand(Card.MANTIS, Card.TIGER, Color.BLUE);
+        Hand red = new Hand(Card.RABBIT, Card.ELEPHANT, Color.RED);
+        Card middle = Card.EEL;
+        Color turn = Color.BLUE;
+        Piece[][] boardPiece = Main.parseString("2000000010003000400000000");
+        Board board = new Board(boardPiece);
+        Game game = new Game(board, turn, Color.RED, red, blue, middle);
+        for (int i = 1; i < 8; i++) {
+            game = game.applyMove(game.negamaxRoot(10));
+        }
+        assertTrue(game.board.gameOver);
+        assertEquals(Color.RED, game.board.winner);
+    }
+
+    @Test
+    void mateIn9Red() {
+        Hand blue = new Hand(Card.MANTIS, Card.TIGER, Color.BLUE);
+        Hand red = new Hand(Card.RABBIT, Card.EEL, Color.RED);
+        Card middle = Card.ELEPHANT;
+        Color turn = Color.RED;
+        Piece[][] boardPiece = Main.parseString("2000000010000300400000000");
+        Board board = new Board(boardPiece);
+        Game game = new Game(board, turn, Color.RED, red, blue, middle);
+        for (int i = 1; i < 9; i++) {
+            game = game.applyMove(game.negamaxRoot(10));
+        }
         assertTrue(game.board.gameOver);
         assertEquals(Color.RED, game.board.winner);
     }

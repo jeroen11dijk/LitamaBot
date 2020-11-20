@@ -65,6 +65,28 @@ public class MateTest {
     }
 
     @Test
+    void mateIn2BlueTemple() {
+        Hand blue = new Hand(Card.ROOSTER, Card.CRANE, Color.BLUE);
+        Hand red = new Hand(Card.MANTIS, Card.FROG, Color.RED);
+        Card middle = Card.TIGER;
+        Color turn = middle.color;
+        Piece[][] boardPiece = new Piece[][]{
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.REDOX},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.BLUEFIRE, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.BLUE, Piece.EMPTY, Piece.EMPTY}};
+        Board board = new Board(boardPiece);
+        Game game = new Game(board, turn, Color.BLUE, red, blue, middle);
+        Move move = new Move(Card.ROOSTER, Card.ROOSTER.offsets[1], 2, 4);
+        game = game.applyMove(move);
+        game = game.applyMove(game.negamaxRoot(2));
+        game = game.applyMove(game.negamaxRoot(10));
+        assertTrue(game.board.gameOver);
+        assertEquals(Color.BLUE, game.board.winner);
+    }
+
+    @Test
     void unavoidableMateForBlue() {
         Hand blue = new Hand(Card.FROG, Card.HORSE, Color.BLUE);
         Hand red = new Hand(Card.CRAB, Card.RABBIT, Color.RED);
