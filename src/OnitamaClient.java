@@ -59,7 +59,6 @@ public class OnitamaClient extends WebSocketClient {
                     String origin = getCharForNumber(move.x + 1) + (move.y + 1);
                     String target = getCharForNumber(move.x + move.offset.x + 1) + (move.y + move.offset.y + 1);
                     String moveString = origin + target;
-                    System.out.println("move " + matchid + " " + token + " " + card + " " + moveString);
                     send("move " + matchid + " " + token + " " + card + " " + moveString);
                 }
             }

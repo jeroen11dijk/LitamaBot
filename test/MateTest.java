@@ -25,6 +25,25 @@ public class MateTest {
     }
 
     @Test
+    void mateIn1BlueTemple() {
+        Hand blue = new Hand(Card.ROOSTER, Card.CRANE, Color.BLUE);
+        Hand red = new Hand(Card.MANTIS, Card.FROG, Color.RED);
+        Card middle = Card.TIGER;
+        Color turn = middle.color;
+        Piece[][] boardPiece = new Piece[][]{
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.REDOX},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.BLUEFIRE, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY}};
+        Board board = new Board(boardPiece);
+        Game game = new Game(board, turn, Color.BLUE, red, blue, middle);
+        game = game.applyMove(game.negamaxRoot(10));
+        assertTrue(game.board.gameOver);
+        assertEquals(Color.BLUE, game.board.winner);
+    }
+
+    @Test
     void mateIn2Blue() {
         Hand blue = new Hand(Card.ROOSTER, Card.CRANE, Color.BLUE);
         Hand red = new Hand(Card.HORSE, Card.DRAGON, Color.RED);
@@ -103,4 +122,22 @@ public class MateTest {
         assertEquals(Color.RED, game.board.winner);
     }
 
+    @Test
+    void mateIn1RedTemple() {
+        Hand blue = new Hand(Card.RABBIT, Card.MONKEY, Color.BLUE);
+        Hand red = new Hand(Card.GOOSE, Card.COBRA, Color.RED);
+        Card middle = Card.DRAGON;
+        Color turn = middle.color;
+        Piece[][] boardPiece = new Piece[][]{
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.REDOX, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.BLUEFIRE},
+                {Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY, Piece.EMPTY}};
+        Board board = new Board(boardPiece);
+        Game game = new Game(board, turn, Color.RED, red, blue, middle);
+        game = game.applyMove(game.negamaxRoot(10));
+        assertTrue(game.board.gameOver);
+        assertEquals(Color.RED, game.board.winner);
+    }
 }

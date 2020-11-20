@@ -99,6 +99,8 @@ public class Game {
         for (Move move : this.moveGen()) {
             Game newGame = this.applyMove(move);
             int newValue = -newGame.negamaxRec(depth - 1, -beta, -alpha, -color);
+            System.out.println(move);
+            System.out.println(newValue);
             if (newValue > value) {
                 res = move;
                 value = newValue;
