@@ -19,7 +19,6 @@ public class MateTest {
                 {Piece.RED, Piece.RED, Piece.REDOX, Piece.RED, Piece.RED}};
         Board board = new Board(boardPiece);
         Game game = new Game(board, turn, Color.BLUE, red, blue, middle);
-        System.out.println(game.evaluate(10));
         game = game.applyMove(game.negamaxRoot(10));
         assertTrue(game.board.gameOver);
         assertEquals(Color.BLUE, game.board.winner);

@@ -25,7 +25,8 @@ public class Game {
     }
 
     ArrayList<Move> moveGen() {
-        ArrayList<Move> res = new ArrayList<Move>();
+        ArrayList<Move> moves = new ArrayList<Move>();
+        ArrayList<Move> priorityMoves = new ArrayList<Move>();
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 5; x++) {
                 if (this.board.board[y][x].color == this.turn) {
@@ -35,7 +36,11 @@ public class Game {
                         }
                         Move move = new Move(this.currentHand.first, offset, x, y);
                         if (board.validMove(move)) {
-                            res.add(move);
+                            if (this.board.board[y + offset.y][x + offset.x].color != Color.PURPLE) {
+                                priorityMoves.add(move);
+                            } else {
+                                moves.add(move);
+                            }
                         }
                     }
                     for (Offset offset : this.currentHand.second.offsets) {
@@ -44,13 +49,18 @@ public class Game {
                         }
                         Move move = new Move(this.currentHand.second, offset, x, y);
                         if (board.validMove(move)) {
-                            res.add(move);
+                            if (this.board.board[y + offset.y][x + offset.x].color != Color.PURPLE) {
+                                priorityMoves.add(move);
+                            } else {
+                                moves.add(move);
+                            }
                         }
                     }
                 }
             }
         }
-        return res;
+        priorityMoves.addAll(moves);
+        return priorityMoves;
     }
 
     Game applyMove(Move move) {

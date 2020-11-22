@@ -4,6 +4,7 @@ class Move {
     Offset offset;
     int x;
     int y;
+    int priority;
 
     @Override
     public String toString() {
