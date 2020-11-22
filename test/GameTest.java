@@ -125,7 +125,7 @@ public class GameTest {
         Piece[][] boardPiece = Main.parseString("2000000010003000400000000");
         Board board = new Board(boardPiece);
         Game game = new Game(board, turn, Color.RED, red, blue, middle);
-        for (int i = 1; i < 8; i++) {
+        for (int i = 1; i < 9; i++) {
             game = game.applyMove(game.negamaxRoot(10));
         }
         assertTrue(game.board.gameOver);
@@ -141,7 +141,39 @@ public class GameTest {
         Piece[][] boardPiece = Main.parseString("2000000010000300400000000");
         Board board = new Board(boardPiece);
         Game game = new Game(board, turn, Color.RED, red, blue, middle);
-        for (int i = 1; i < 9; i++) {
+        for (int i = 1; i < 10; i++) {
+            game = game.applyMove(game.negamaxRoot(10));
+        }
+        assertTrue(game.board.gameOver);
+        assertEquals(Color.RED, game.board.winner);
+    }
+
+    @Test
+    void mateIn10RedBlueTurn() {
+        Hand blue = new Hand(Card.ELEPHANT, Card.TIGER, Color.BLUE);
+        Hand red = new Hand(Card.RABBIT, Card.EEL, Color.RED);
+        Card middle = Card.MANTIS;
+        Color turn = Color.BLUE;
+        Piece[][] boardPiece = Main.parseString("0200000010000300400000000");
+        Board board = new Board(boardPiece);
+        Game game = new Game(board, turn, Color.RED, red, blue, middle);
+        for (int i = 1; i < 11; i++) {
+            game = game.applyMove(game.negamaxRoot(10));
+        }
+        assertTrue(game.board.gameOver);
+        assertEquals(Color.RED, game.board.winner);
+    }
+
+    @Test
+    void mateIn11Red() {
+        Hand blue = new Hand(Card.ELEPHANT, Card.TIGER, Color.BLUE);
+        Hand red = new Hand(Card.MANTIS, Card.EEL, Color.RED);
+        Card middle = Card.RABBIT;
+        Color turn = Color.RED;
+        Piece[][] boardPiece = Main.parseString("0200000010000000430000000");
+        Board board = new Board(boardPiece);
+        Game game = new Game(board, turn, Color.RED, red, blue, middle);
+        for (int i = 1; i < 12; i++) {
             game = game.applyMove(game.negamaxRoot(10));
         }
         assertTrue(game.board.gameOver);

@@ -7,12 +7,12 @@ public class Game {
     public int HIGH = 100000;
 
     Board board;
-    private Color turn;
-    private Color me;
-    private Hand red;
-    private Hand blue;
-    private Card middle;
-    private Hand currentHand;
+    private final Color turn;
+    private final Color me;
+    private final Hand red;
+    private final Hand blue;
+    private final Card middle;
+    private final Hand currentHand;
 
     Game(Board board, Color turn, Color me, Hand red, Hand blue, Card middle) {
         this.board = board;
@@ -92,8 +92,8 @@ public class Game {
             return null;
         }
         Move res = null;
-        int alpha = -Integer.MAX_VALUE;
-        int beta = Integer.MAX_VALUE;
+        int alpha = -(HIGH + depth - 1);
+        int beta = HIGH + depth - 1;
         int value = Integer.MIN_VALUE;
         int color = this.turn == Color.RED ? -1 : 1;
         for (Move move : this.moveGen()) {

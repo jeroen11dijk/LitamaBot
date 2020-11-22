@@ -80,7 +80,7 @@ public class MateTest {
         Game game = new Game(board, turn, Color.BLUE, red, blue, middle);
         Move move = new Move(Card.ROOSTER, Card.ROOSTER.offsets[1], 2, 4);
         game = game.applyMove(move);
-        game = game.applyMove(game.negamaxRoot(2));
+        game = game.applyMove(game.negamaxRoot(10));
         game = game.applyMove(game.negamaxRoot(10));
         assertTrue(game.board.gameOver);
         assertEquals(Color.BLUE, game.board.winner);
