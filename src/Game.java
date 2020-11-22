@@ -80,10 +80,45 @@ public class Game {
         if (this.board.gameOver && this.board.winner == Color.RED) {
             return -HIGH - depth;
         }
-
         int res = 0;
-        res += this.board.nPieces(Color.BLUE);
-        res -= this.board.nPieces(Color.RED);
+        int[][] canReachBlue = new int[5][5];
+        int[][] canReachRed = new int[5][5];
+        for (int y = 0; y < 5; y++) {
+            for (int x = 0; x < 5; x++) {
+                if (this.board.board[y][x] == Piece.BLUE) {
+                    res += 3;
+                    for (Offset offset : this.blue.first.offsets) {
+                        if (this.board.validMove(offset, x, y)) {
+                            canReachBlue[y + offset.y][x + offset.x] = 1;
+                        }
+                    }
+                    for (Offset offset : this.blue.second.offsets) {
+                        if (this.board.validMove(offset, x, y)) {
+                            canReachBlue[y + offset.y][x + offset.x] = 1;
+                        }
+                    }
+                }
+                if (this.board.board[y][x] == Piece.RED) {
+                    res -= 3;
+                    for (Offset offset : this.blue.first.offsets) {
+                        if (this.board.validMove(offset, x, y)) {
+                            canReachRed[y + offset.y][x + offset.x] = 1;
+                        }
+                    }
+                    for (Offset offset : this.blue.second.offsets) {
+                        if (this.board.validMove(offset, x, y)) {
+                            canReachRed[y + offset.y][x + offset.x] = 1;
+                        }
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                res += 2 * canReachBlue[i][j];
+                res -= 2 * canReachRed[i][j];
+            }
+        }
         return res;
     }
 

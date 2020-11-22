@@ -64,18 +64,6 @@ public class Board {
         return res;
     }
 
-    public int nPieces(Color color) {
-        int res = 0;
-        for (int y = 0; y < 5; y++) {
-            for (int x = 0; x < 5; x++) {
-                if(board[y][x].color == color) {
-                    res++;
-                }
-            }
-        }
-        return res;
-    }
-
     public String toString() {
         String res = "";
         for (int i = 4; i > -1; i--) {
