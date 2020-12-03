@@ -2,11 +2,26 @@ import java.util.HashMap;
 
 public class TableBase {
 
-    public HashMap<Integer, Integer> tablebase;
+    public HashMap<Board, Integer> tablebase;
 
     public TableBase() {
-        StringBuilder empty = new StringBuilder("0000000000000000000000000");
-        empty.setCharAt(0, '1');
-        Board board = Board.parseString(empty.toString());
+        tablebase = new HashMap<>();
+        generateMateIn0();
+        System.out.println(tablebase.size());
+    }
+
+    public void generateMateIn0() {
+        StringBuilder capture = new StringBuilder("0000000000000000000000000");
+        StringBuilder temple = new StringBuilder("0000000000000000000000200");
+        for (int i = 0; i < capture.length(); i++) {
+            StringBuilder copyCapture = new StringBuilder(capture);
+            copyCapture.setCharAt(i, '2');
+            tablebase.put(new Board(copyCapture.toString()), 0);
+            if(temple.charAt(i) != '2') {
+                StringBuilder copyTemple = new StringBuilder(capture);
+                copyTemple.setCharAt(i, '4');
+                tablebase.put(new Board(copyTemple.toString()), 0);
+            }
+        }
     }
 }
