@@ -38,7 +38,6 @@ public class OnitamaClient extends WebSocketClient {
             System.out.println("https://git.io/onitama#spectate-" + matchid);
             token = json.getString("token");
             send("spectate " + matchid);
-//            send("join " + matchid + " jeronBot");
         } else if (json.getString("messageType").equals("state")) {
             if (!json.getString("gameState").equals("waiting for player")) {
                 JSONObject usernames = json.getJSONObject("usernames");
@@ -51,8 +50,7 @@ public class OnitamaClient extends WebSocketClient {
                     Hand blueHand = new Hand(Card.getCard(blueCards.get(0).toString()),Card.getCard(blueCards.get(1).toString()), Color.BLUE);
                     Hand redHand = new Hand(Card.getCard(redCards.get(0).toString()),Card.getCard(redCards.get(1).toString()), Color.RED);
                     Card middle = Card.getCard(cards.getString("side"));
-                    Piece[][] boardPiece = Main.parseString(json.getString("board"));
-                    Board board = new Board(boardPiece);
+                    Board board = Board.parseString(json.getString("board"));
                     Game game = new Game(board, turn, Color.BLUE, redHand, blueHand, middle);
                     Move move = game.negamaxRoot(10);
                     String card = move.card.name.toLowerCase();
